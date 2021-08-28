@@ -12,7 +12,7 @@ class tabla{
 	/*
 		(*) obj:Es el obj q se va a pushear
 		(*) kp:llave primaria 
-		tabla:es la tabla a la q se conecta nuestro onjeto
+		tabla:es la tabla a la q se conecta nuestro objeto
 		kf:llave foranea a la q apunta o se almacena la (kp)
 		objf:es el obj foraneo q se va apushear en caso de q se resiva uno
 		id:llave primaria el la tabla foranea
@@ -55,20 +55,23 @@ class tabla{
 			return 100//esta en la tabla
 		}
 	}
-	inTabla(kp,val){//intabla("player","oscar")
+	inTabla(kp,val,e=false){//intabla("player","oscar") el tercer para metri tru si desea optener todo el obj false si solo desea la posicion
 		for (let i=0;i<this.data.length; i++) {
-			if(this.data[i][kp]==val)return i
+			if(this.data[i][kp]==val)return (e)?this.data[i]:i
 		}
-		return -1
+		return (e)?null:-1
 	}
 	remove(kp,val,tabla=null){
 		let p=this.inTabla(kp,val)
-		if(tabla!=null){
-			let {id,valf}=this.data[p].foranea
-			let s=tabla.inTabla(id,valf)
-			tabla.data[s].players.splice(tabla.data[s].players.indexOf(val),1)//lo elimino de su sala
+		if(p>-1){
+			if(tabla!=null){
+				let {id,valf}=this.data[p].foranea
+				let s=tabla.inTabla(id,valf)
+				tabla.data[s].players.splice(tabla.data[s].players.indexOf(val),1)//lo elimino de su sala
+			}
+			this.data.splice(p,1)//elimino el jugador q se desconecte
 		}
-		this.data.splice(p,1)//elimino el jugador q se desconecte
+		
 	}
 	
 }
