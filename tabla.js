@@ -55,19 +55,53 @@ class tabla{
 			return 100//esta en la tabla
 		}
 	}
-	inTabla(kp,val,e=false){//intabla("player","oscar") el tercer para metri tru si desea optener todo el obj false si solo desea la posicion
-		for (let i=0;i<this.data.length; i++) {
-			if(this.data[i][kp]==val)return (e)?this.data[i]:i
+	inForanea(val,e=false){//retorna un array
+		let res=this.data.map((r,i)=>(r.foranea.valf===val)?r:-1)
+
+		if(res=="")return (e)?null:-1
+		if(e){
+			res=res.filter(r=>!Number(r))
+			if(res=="")return null
+			else if(res.length>1)return res
+			else return res[0]	
+		}else{
+			res = res.map((r,i)=>{
+				if(!Number(r))return i
+				else return -1
+			})
+			res=res.filter(r=>r!=-1)
+			if(res=="")return -1
+			else if(res.length>1)return res
+			else return res[0]
 		}
-		return (e)?null:-1
+	}
+	inTabla(kp,val,e=false){//intabla("player","oscar") retorna un array el tercer para metri tru si desea optener todo el obj false si solo desea la posicion
+		let res=this.data.map((r,i)=>(r[kp]==val)?r:-1)
+		if(res=="")return (e)?null:-1
+		if(e){
+			 res = res.filter(r=>!Number(r))
+			if(res=="")return null
+			else if(res.length>1)return res
+			else return res[0]			 
+		}else{
+			
+			res = res.map((r,i)=>{
+				if(!Number(r))return i
+				else return -1
+			})
+			res=res.filter(r=>r!=-1)
+			if(res=="")return -1
+			else if(res.length>1)return res
+			else return res[0]
+		}
 	}
 	remove(kp,val,tabla=null){
 		let p=this.inTabla(kp,val)
 		if(p>-1){
 			if(tabla!=null){
 				let {id,valf}=this.data[p].foranea
-				let s=tabla.inTabla(id,valf)
-				tabla.data[s].players.splice(tabla.data[s].players.indexOf(val),1)//lo elimino de su sala
+				let s=tabla.inTabla(id,valf,true)
+				s.players.splice(s.players.indexOf(val),1)//lo elimino de su sala
 			}
 			this.data.splice(p,1)//elimino el jugador q se desconecte
 		}
